@@ -1,6 +1,6 @@
 # iconizer
 
-![alt text](https://github.com/hadiscada/iconizer/blob/Capture.png?raw=true)
+![Screenshot](Capture.PNG)
 
 this small windows desktop application is for creating icon. 
 you can pick some icon from MaterialDesign icon pack and create icon file.
