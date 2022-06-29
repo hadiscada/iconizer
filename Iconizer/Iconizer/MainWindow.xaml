@@ -1,0 +1,123 @@
+﻿<Window x:Class="Iconizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:Iconizer"
+        mc:Ignorable="d"
+        Title="iconizer" Height="550" Width="800" Icon="icon_info.ico">
+    <Window.Resources>
+        <ObjectDataProvider ObjectInstance="{x:Type Colors}" MethodName="GetProperties" x:Key="colorPropertiesOdp" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Designer" Margin="0,0">
+                <StackPanel>
+                    <ComboBox md:HintAssist.Hint="Parent" IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Name="cboParent">
+                        <ComboBoxItem IsSelected="True">
+                            None
+                        </ComboBoxItem>
+                        <ComboBoxItem IsSelected="False">
+                            Button
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <ComboBox md:HintAssist.Hint="Parent Style" IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}" Name="cboParentStyle">
+                        <ComboBoxItem IsSelected="True">
+                            None
+                        </ComboBoxItem>
+                        <ComboBoxItem IsSelected="False">
+                            Circle
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <TextBox md:HintAssist.Hint="Parent Width" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Name="txtParWidth"/>
+                    <TextBox md:HintAssist.Hint="Parent Height" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Name="txtParHeight"/>
+                    <ComboBox md:HintAssist.Hint="Parent Color" Name="cboParColor" IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}" ItemsSource="{Binding Source={StaticResource colorPropertiesOdp}}" DisplayMemberPath="Name" SelectedValuePath="Name"/>
+                    <!--<TextBox md:HintAssist.Hint="Parent Color" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Name="txtParColor"/>-->
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Name="btnBrowseIcon" Click="btnBrowseIcon_Click">...</Button>
+                        <TextBox md:HintAssist.Hint="Icon Kind" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="Home" Name="txtIconKind"/>
+                    </DockPanel>
+                    <TextBox md:HintAssist.Hint="Icon Width" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="50" Name="txtIconWidth"/>
+                    <TextBox md:HintAssist.Hint="Icon Height" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="50" Name="txtIconHeight"/>
+                    <ComboBox md:HintAssist.Hint="Icon Color" Name="cboIconColor" Text="CornflowerBlue" IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}" ItemsSource="{Binding Source={StaticResource colorPropertiesOdp}}" DisplayMemberPath="Name" SelectedValuePath="Name"/>
+                    <!--<DockPanel>
+                        <Button DockPanel.Dock="Right" Name="btnBrowseColor" Click="btnBrowseColor_Click">...</Button>
+                        <TextBox md:HintAssist.Hint="Icon Color" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="CornflowerBlue" Name="txtIconColor"/>
+                    </DockPanel>-->
+                    <ComboBox md:HintAssist.Hint="Background Color" Name="cboBackColor" IsEditable="True" Style="{StaticResource MaterialDesignFloatingHintComboBox}" ItemsSource="{Binding Source={StaticResource colorPropertiesOdp}}" DisplayMemberPath="Name" SelectedValuePath="Name"/>
+                    <!--<TextBox md:HintAssist.Hint="Background Color" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="" Name="txtBackColor"/>-->                    
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center">
+                <Button Name="btnCreate" Click="btnCreate_Click">Create</Button>
+                <Button Name="btnSavePng" Click="btnSave_Click" Margin="10,0">Save PNG</Button>
+                <Button Name="btnSaveIco" Click="btnSaveIco_Click">Save ICO</Button>
+            </StackPanel>            
+        </Grid>
+        <GridSplitter Width="2" Background="Gray"/>
+        <Grid Grid.Column="1" Name="grdBack">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Name="pnlObj">
+                <md:PackIcon Kind="Home" Width="50" Height="50" Foreground="CornflowerBlue" Name="iconOnly" Visibility="Visible"/>
+                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Width="50" Height="50" Name="btnCircle" Visibility="Collapsed">
+                    <md:PackIcon Kind="Home" Width="30" Height="30" Foreground="White" Name="iconCircle"/>
+                </Button>
+                <Button Width="50" Height="50" Padding="0" Name="btnSquare" Visibility="Collapsed">
+                    <md:PackIcon Kind="Home" Width="30" Height="30" Foreground="White" Name="iconSquare"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Background="Gray" Name="grdIcons" Visibility="Collapsed">            
+            <GroupBox Header="Select Icon" Margin="50" Background="White">
+                <ListView VerticalContentAlignment="Top" Name="lsvIcons" SelectionChanged="lsvIcons_SelectionChanged">
+                    <!--<ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+            RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+            ItemWidth="{Binding (ListView.View).ItemWidth, 
+            RelativeSource={RelativeSource AncestorType=ListView}}"
+            MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+            ItemHeight="{Binding (ListView.View).ItemHeight, 
+            RelativeSource={RelativeSource AncestorType=ListView}}" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>-->                   
+                </ListView>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" Margin="50" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button Width="30" Name="btnPrevIcons" Click="btnPrevIcons_Click" Background="Transparent" BorderBrush="Transparent" Padding="0">
+                    <md:PackIcon Kind="ArrowLeft"/>
+                </Button>
+                <Button Width="30" Name="btnNextIcons" Click="btnNextIcons_Click" Background="Transparent" BorderBrush="Transparent" Padding="0">
+                    <md:PackIcon Kind="ArrowRight"/>
+                </Button>
+                <TextBox Width="100" md:HintAssist.Hint="Search" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" Name="txtFindIcon"/>
+                <Button Width="30" Name="btnFindIcons" Click="btnFindIcons_Click" Background="Transparent" BorderBrush="Transparent" Padding="0">
+                    <md:PackIcon Kind="Search"/>
+                </Button>
+                <Button Width="50" Name="btnCloseIcon" Click="btnCloseIcon_Click" Background="Transparent" BorderBrush="Transparent">
+                    <md:PackIcon Kind="Close"/>
+                </Button>
+            </StackPanel>            
+        </Grid>
+        <Grid Grid.Column="1" Background="Gray" Name="grdColors" Visibility="Collapsed">
+            <GroupBox Header="Select Color" Margin="50" Background="White">
+                <ListView VerticalContentAlignment="Top" Name="lsvColors" SelectionChanged="lsvColors_SelectionChanged">
+                </ListView>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" Margin="50" VerticalAlignment="Top" HorizontalAlignment="Right">                
+                <Button Width="50" Name="btnCloseColor" Click="btnCloseColor_Click" Background="Transparent" BorderBrush="Transparent">
+                    <md:PackIcon Kind="Close"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
